@@ -1,81 +1,43 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
-
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+  <h1 class="text-3xl font-bold underline">Hello world!</h1>
+  <div class="container mx-auto px-4">
+    <div class="grid grid-cols-4 gap-4">
+      <div v-for="pokemon in pokemons" :key="pokemon.name">
+        <Pokemon :pokemon_id="getId(pokemon)"></Pokemon>
+      </div>
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
+  <a :href="previous">Anterior</a>
+  <a :href="next">Próxima</a>
 </template>
 
-<style>
-@import './assets/base.css';
+<script>
+import Pokemon from "./components/Pokemon.vue";
+export default {
+  data() {
+    return {
+      pokemons: [],
+      previous: null,
+      next: null,
+    };
+  },
+  beforeMount() {
+    this.getPokemons();
+  },
+  methods: {
+    getPokemons() {
+      fetch("https://pokeapi.co/api/v2/pokemon/")
+        .then((res) => res.json())
+        .then((res) => {
+          this.pokemons = res.results;
+        });
+    },
+    getId(pokemon) {
+      return pokemon.url.split("/")[6];
+    },
+  },
+  components: { Pokemon },
+};
+</script>
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
-}
-
-header {
-  line-height: 1.5;
-}
-
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
-  }
-}
-
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
-
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-}
-</style>
+<style></style>
