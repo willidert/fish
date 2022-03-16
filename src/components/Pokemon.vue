@@ -5,12 +5,16 @@
       :src="((pokemon || {}).sprites || {}).front_default"
       :alt="pokemon.name"
     />
-    <div class="px-6 py-4 whitespace-nowrap">
+    <div class="px-2 py-2">
       <span
-        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
+        class="px-2 text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800"
         v-for="type in pokemon.types"
         >{{ ((type || {}).type || {}).name }}</span
       >
+    </div>
+    <div class="grid grid-cols-2">
+      <span>Weight: {{ pokemon.weight }}</span>
+      <span>Height: {{ pokemon.height }}</span>
     </div>
     <span class="capitalize">{{ pokemon.name }}</span>
   </div>
